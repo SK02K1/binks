@@ -5,6 +5,7 @@ import { defaultLoginFormData, testCredentials } from '@src/constants';
 import { formFieldsFilled } from '@src/libs';
 
 import {
+  login,
   selectAuthServiceError,
   selectAuthServiceStatus,
   selectToken,
@@ -30,13 +31,22 @@ export const Login = () => {
     setFormData(testCredentials);
   };
 
+  const formSubmitHandler = (e) => {
+    e.preventDefault();
+    const userData = { email, password };
+    dispatch(login({ userData }));
+  };
+
   if (token) {
     return <Navigate to={from} replace />;
   }
 
   return (
     <div className='h-screen w-screen flex justify-center items-center text-slate-700'>
-      <form className='sm:w-2/3 md:w-1/2 lg:w-1/3 px-8 py-4 m-4 rounded-2xl'>
+      <form
+        onSubmit={formSubmitHandler}
+        className='sm:w-2/3 md:w-1/2 lg:w-1/3 px-8 py-4 m-4 rounded-2xl'
+      >
         <h1 className='text-2xl font-semibold text-center mb-8'>Login</h1>
         {error && (
           <p className='text-red-500 text-center pb-2'>{error.errorMessage}</p>

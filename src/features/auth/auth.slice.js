@@ -33,6 +33,28 @@ export const register = createAsyncThunk(
   }
 );
 
+export const login = createAsyncThunk(
+  'auth/login',
+  async ({ userData }, thunkAPI) => {
+    try {
+      const { data, status } = await axios.post('auth/login', { ...userData });
+      if (status === 201) {
+        const { token } = data;
+        localStorage.setItem('binks-token', token);
+        return { token };
+      }
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue({
+        error: {
+          message: 'Failed to login',
+          errorMessage: error.response.data.message,
+        },
+      });
+    }
+  }
+);
+
 const authSlice = createSlice({
   name,
   initialState,
@@ -49,6 +71,21 @@ const authSlice = createSlice({
       state.token = payload.token;
     });
     builder.addCase(register.rejected, (state, { payload }) => {
+      state.status = 'failed';
+      state.error = payload.error;
+    });
+
+    // LOGIN
+    builder.addCase(login.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+    builder.addCase(login.fulfilled, (state, { payload }) => {
+      state.status = 'succeeded';
+      state.error = null;
+      state.token = payload.token;
+    });
+    builder.addCase(login.rejected, (state, { payload }) => {
       state.status = 'failed';
       state.error = payload.error;
     });
