@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Home, Register, Login, Posts } from './pages';
+import { Home, Register, Login, Posts, Profile } from './pages';
 import { getUser, selectToken } from './features';
 import { RequiresAuth } from './components';
 
@@ -25,6 +25,7 @@ export const App = () => {
         <Route element={<RequiresAuth />}>
           <Route path='/' element={<Home />} />
           <Route path='/posts' element={<Posts />} />
+          <Route path='/profile' element={<Profile />} />
         </Route>
       </Routes>
     </div>

@@ -55,6 +55,7 @@ const userSlice = createSlice({
   },
 });
 
+export const selectUserServiceStatus = (state) => state.user.status;
 export const selectUserDetails = (state) => state.user.details;
 export const selectUserPosts = (state) => state.user.posts;
 
