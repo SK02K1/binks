@@ -5,3 +5,13 @@ export const defaultRegisterFormData = {
   password: '',
   confirmPassword: '',
 };
+
+export const defaultLoginFormData = {
+  email: '',
+  password: '',
+};
+
+export const testCredentials = {
+  email: 'test@test.com',
+  password: 'test',
+};

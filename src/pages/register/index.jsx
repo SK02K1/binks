@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, Navigate, useLocation } from 'react-router-dom';
+import { defaultRegisterFormData } from '@src/constants';
+import { formFieldsFilled } from '@src/libs';
+
 import {
   register,
   selectAuthServiceError,
   selectAuthServiceStatus,
   selectToken,
 } from '@src/features';
-import { defaultRegisterFormData } from '@src/constants';
-import { formFieldsFilled } from '@src/libs';
 
 export const Register = () => {
   const [formData, setFormData] = useState(defaultRegisterFormData);
@@ -16,6 +17,7 @@ export const Register = () => {
   const error = useSelector(selectAuthServiceError);
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const { firstname, lastname, email, password, confirmPassword } = formData;
 
