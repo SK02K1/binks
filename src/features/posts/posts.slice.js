@@ -79,6 +79,28 @@ export const editPostContent = createAsyncThunk(
   }
 );
 
+export const deletePost = createAsyncThunk(
+  'posts/deletePost',
+  async ({ token, postId }, thunkAPI) => {
+    try {
+      const { data, status } = await axios.delete(`posts/${postId}`, {
+        headers: { authorization: token },
+      });
+      if (status === 200) {
+        return { posts: data.posts.reverse() };
+      }
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue({
+        error: {
+          message: 'Failed to delete the post',
+          errorMessage: error.message,
+        },
+      });
+    }
+  }
+);
+
 const postsSlice = createSlice({
   name,
   initialState,
@@ -117,6 +139,17 @@ const postsSlice = createSlice({
       state.posts = payload.posts;
     });
     builder.addCase(editPostContent.rejected, (state, { payload }) => {
+      state.error = payload.error;
+    });
+
+    // DELETE_POST
+    builder.addCase(deletePost.pending, (state) => {
+      state.error = null;
+    });
+    builder.addCase(deletePost.fulfilled, (state, { payload }) => {
+      state.posts = payload.posts;
+    });
+    builder.addCase(deletePost.rejected, (state, { payload }) => {
       state.error = payload.error;
     });
   },

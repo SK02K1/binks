@@ -9,6 +9,7 @@ import {
   hideModal,
   editPostContent,
   selectToken,
+  deletePost,
 } from '@src/features';
 
 export const Post = ({ post }) => {
@@ -30,6 +31,10 @@ export const Post = ({ post }) => {
     setEditedContent(content);
     setShowEditModal(true);
     dispatch(showModal());
+  };
+
+  const trashBtnClickHandler = () => {
+    dispatch(deletePost({ token, postId: post._id }));
   };
 
   const editContentFormSubmitHandler = async (e) => {
@@ -108,7 +113,10 @@ export const Post = ({ post }) => {
               <div onClick={editBtnClickHandler} className='cursor-pointer p-1'>
                 <Edit />
               </div>
-              <div className='cursor-pointer p-1 ml-2'>
+              <div
+                onClick={trashBtnClickHandler}
+                className='cursor-pointer p-1 ml-2'
+              >
                 <Trash />
               </div>
             </div>
