@@ -59,10 +59,10 @@ npm run dev
 
 ## Test credentials
 - user01
-  - Username: tanay@neog.camp
+  - Email: tanay@neog.camp
   - Password: 1234
 - user02
-  - Username: test@test.com
+  - Email: test@test.com
   - Password: test
 
 ## Preview
