@@ -9,11 +9,16 @@ export const Modal = ({ children }) => {
   const modalVisibilityState = useSelector(selectModalVisibilityState);
 
   useEffect(() => {
-    document.body.style.overflowY = 'hidden';
+    if (modalVisibilityState) {
+      document.body.style.overflowY = 'hidden';
+    } else {
+      document.body.style.overflowY = 'scroll';
+    }
+
     return () => {
       document.body.style.overflowY = 'scroll';
     };
-  }, []);
+  }, [modalVisibilityState]);
 
   if (modalVisibilityState) {
     return ReactDOM.createPortal(

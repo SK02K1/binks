@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { formFieldsFilled } from '@src/libs';
-import { Spinner, Modal } from '@src/components';
+import { Spinner, Modal, Post } from '@src/components';
 
 import {
   selectUserDetails,
@@ -11,6 +11,9 @@ import {
   hideModal,
   updateUserDetails,
   selectToken,
+  selectUserPosts,
+  selectAllPosts,
+  getUser,
 } from '@src/features';
 
 export const Profile = () => {
@@ -22,6 +25,8 @@ export const Profile = () => {
 
   const userServiceStatus = useSelector(selectUserServiceStatus);
   const userDetails = useSelector(selectUserDetails);
+  const userPosts = useSelector(selectUserPosts);
+  const allposts = useSelector(selectAllPosts);
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
 
@@ -57,6 +62,10 @@ export const Profile = () => {
     await dispatch(updateUserDetails({ token, editFormData }));
     dispatch(hideModal());
   };
+
+  useEffect(() => {
+    dispatch(getUser({ token }));
+  }, [allposts]);
 
   if (userServiceStatus === 'pending') {
     return <Spinner />;
@@ -145,7 +154,14 @@ export const Profile = () => {
           Edit
         </button>
       </div>
-      <h2 className='text-center text-md my-4'>Manage posts</h2>
+      <div className='py-2 mb-2'>
+        <h2 className='text-center text-md my-4'>Manage posts</h2>
+        {userPosts &&
+          userPosts.map((post) => <Post key={post._id} post={post} />)}
+        {userPosts && userPosts.length === 0 && (
+          <p className='text-center'>no posts found :(</p>
+        )}
+      </div>
     </div>
   );
 };
