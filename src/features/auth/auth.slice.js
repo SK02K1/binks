@@ -58,7 +58,12 @@ export const login = createAsyncThunk(
 const authSlice = createSlice({
   name,
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.token = null;
+      localStorage.removeItem('binks-token');
+    },
+  },
   extraReducers(builder) {
     // REGISTER
     builder.addCase(register.pending, (state) => {
@@ -96,4 +101,5 @@ export const selectToken = (state) => state.auth.token;
 export const selectAuthServiceStatus = (state) => state.auth.status;
 export const selectAuthServiceError = (state) => state.auth.error;
 
+export const { logout } = authSlice.actions;
 export const authReducer = authSlice.reducer;
