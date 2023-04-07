@@ -10,6 +10,8 @@ import {
   editPostContent,
   selectToken,
   deletePost,
+  likePost,
+  dislikePost,
 } from '@src/features';
 
 export const Post = ({ post }) => {
@@ -24,6 +26,8 @@ export const Post = ({ post }) => {
   const { user, content } = post;
   const { firstname, lastname } = user;
   const isMyPost = post.user._id === userDetails?._id;
+  const isPostLiked = post.likedBy.includes(userDetails?._id);
+  const likeCount = post.likedBy.length;
   const isEditFormReadyToSubmit =
     editedContent.trim() !== '' && editedContent.trim() !== content;
 
@@ -35,6 +39,11 @@ export const Post = ({ post }) => {
 
   const trashBtnClickHandler = () => {
     dispatch(deletePost({ token, postId: post._id }));
+  };
+
+  const likeDislikeBtnClickHandler = () => {
+    const payload = { token, postId: post._id };
+    isPostLiked ? dispatch(dislikePost(payload)) : dispatch(likePost(payload));
   };
 
   const editContentFormSubmitHandler = async (e) => {
@@ -102,8 +111,12 @@ export const Post = ({ post }) => {
         </div>
         <p className='py-4'>{content}</p>
         <div className='flex items-center'>
-          <div className='cursor-pointer p-1 mr-2'>
-            <Heart />
+          <div
+            onClick={likeDislikeBtnClickHandler}
+            className='flex items-center cursor-pointer p-1 mr-2'
+          >
+            <Heart isLiked={isPostLiked} />
+            <span className='px-1'>{likeCount}</span>
           </div>
           <div className='cursor-pointer p-1'>
             <Comment />

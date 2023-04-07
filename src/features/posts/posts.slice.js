@@ -101,6 +101,58 @@ export const deletePost = createAsyncThunk(
   }
 );
 
+export const likePost = createAsyncThunk(
+  'posts/likePost',
+  async ({ token, postId }, thunkAPI) => {
+    try {
+      const { data, status } = await axios.post(
+        `posts/${postId}/like`,
+        {},
+        {
+          headers: { authorization: token },
+        }
+      );
+      if (status === 200) {
+        return { posts: data.posts.reverse() };
+      }
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue({
+        error: {
+          message: 'Failed to like the post',
+          errorMessage: error.message,
+        },
+      });
+    }
+  }
+);
+
+export const dislikePost = createAsyncThunk(
+  'posts/dislikePost',
+  async ({ token, postId }, thunkAPI) => {
+    try {
+      const { data, status } = await axios.post(
+        `posts/${postId}/dislike`,
+        {},
+        {
+          headers: { authorization: token },
+        }
+      );
+      if (status === 200) {
+        return { posts: data.posts.reverse() };
+      }
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue({
+        error: {
+          message: 'Failed to like the post',
+          errorMessage: error.message,
+        },
+      });
+    }
+  }
+);
+
 const postsSlice = createSlice({
   name,
   initialState,
@@ -150,6 +202,28 @@ const postsSlice = createSlice({
       state.posts = payload.posts;
     });
     builder.addCase(deletePost.rejected, (state, { payload }) => {
+      state.error = payload.error;
+    });
+
+    // LIKE_POST
+    builder.addCase(likePost.pending, (state) => {
+      state.error = null;
+    });
+    builder.addCase(likePost.fulfilled, (state, { payload }) => {
+      state.posts = payload.posts;
+    });
+    builder.addCase(likePost.rejected, (state, { payload }) => {
+      state.error = payload.error;
+    });
+
+    // DISLIKE_POST
+    builder.addCase(dislikePost.pending, (state) => {
+      state.error = null;
+    });
+    builder.addCase(dislikePost.fulfilled, (state, { payload }) => {
+      state.posts = payload.posts;
+    });
+    builder.addCase(dislikePost.rejected, (state, { payload }) => {
       state.error = payload.error;
     });
   },

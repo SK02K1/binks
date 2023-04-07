@@ -1,10 +1,10 @@
-export const Heart = () => {
+export const Heart = ({ isLiked }) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
       width='16'
       height='16'
-      fill='none'
+      fill={isLiked ? '#ff0000' : 'none'}
       strokeWidth='1.5'
       color='#000'
       viewBox='0 0 24 24'
