@@ -153,6 +153,30 @@ export const dislikePost = createAsyncThunk(
   }
 );
 
+export const addComment = createAsyncThunk(
+  'posts/addComment',
+  async ({ token, postId, comment }, thunkAPI) => {
+    try {
+      const { data, status } = await axios.post(
+        'comments',
+        { postId, comment },
+        { headers: { authorization: token } }
+      );
+      if (status === 200) {
+        return { posts: data.posts.reverse() };
+      }
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue({
+        error: {
+          message: 'Failed to add comment',
+          errorMessage: error.message,
+        },
+      });
+    }
+  }
+);
+
 const postsSlice = createSlice({
   name,
   initialState,
@@ -224,6 +248,17 @@ const postsSlice = createSlice({
       state.posts = payload.posts;
     });
     builder.addCase(dislikePost.rejected, (state, { payload }) => {
+      state.error = payload.error;
+    });
+
+    // ADD_COMMENT
+    builder.addCase(addComment.pending, (state) => {
+      state.error = null;
+    });
+    builder.addCase(addComment.fulfilled, (state, { payload }) => {
+      state.posts = payload.posts;
+    });
+    builder.addCase(addComment.rejected, (state, { payload }) => {
       state.error = payload.error;
     });
   },

@@ -80,3 +80,24 @@ export const Trash = () => {
     </svg>
   );
 };
+
+export const Plus = () => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='16'
+      height='16'
+      fill='none'
+      strokeWidth='1.5'
+      color='#000'
+      viewBox='0 0 24 24'
+    >
+      <path
+        stroke='#fff'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        d='M6 12h6m6 0h-6m0 0V6m0 6v6'
+      ></path>
+    </svg>
+  );
+};
