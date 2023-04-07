@@ -134,7 +134,7 @@ export const Post = ({ post }) => {
             {firstname} {lastname}
           </h2>
         </div>
-        <p className='py-4'>{content}</p>
+        <p className='py-4 whitespace-pre-line'>{content}</p>
         <div className='flex items-center'>
           <div
             onClick={likeDislikeBtnClickHandler}
