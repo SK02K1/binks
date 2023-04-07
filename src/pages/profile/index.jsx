@@ -16,7 +16,7 @@ export const Profile = () => {
   }
 
   return (
-    <div className='min-w-fit	max-w-xl mx-auto px-1'>
+    <div className='max-w-xl mx-auto px-1'>
       <div className='flex items-start my-2 p-4 border rounded-xl'>
         <img
           className='rounded-full bg-slate-100 w-20 h-20'
