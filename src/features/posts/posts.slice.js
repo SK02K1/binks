@@ -55,6 +55,30 @@ export const createNewPost = createAsyncThunk(
   }
 );
 
+export const editPostContent = createAsyncThunk(
+  'posts/editPostContent',
+  async ({ token, postId, content }, thunkAPI) => {
+    try {
+      const { data, status } = await axios.post(
+        `posts/${postId}`,
+        { content },
+        { headers: { authorization: token } }
+      );
+      if (status === 200) {
+        return { posts: data.posts.reverse() };
+      }
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue({
+        error: {
+          message: 'Failed to edit the post',
+          errorMessage: error.message,
+        },
+      });
+    }
+  }
+);
+
 const postsSlice = createSlice({
   name,
   initialState,
@@ -82,6 +106,17 @@ const postsSlice = createSlice({
       state.posts = payload.posts;
     });
     builder.addCase(createNewPost.rejected, (state, { payload }) => {
+      state.error = payload.error;
+    });
+
+    // EDIT_POST_CONTENT
+    builder.addCase(editPostContent.pending, (state) => {
+      state.error = null;
+    });
+    builder.addCase(editPostContent.fulfilled, (state, { payload }) => {
+      state.posts = payload.posts;
+    });
+    builder.addCase(editPostContent.rejected, (state, { payload }) => {
       state.error = payload.error;
     });
   },

@@ -113,7 +113,7 @@ export const Profile = () => {
           </label>
           <div className='flex items-center justify-end'>
             <button
-              className=' bg-slate-600 py-1 px-4 rounded text-white disabled:bg-slate-100 disabled:cursor-not-allowed'
+              className=' bg-slate-600 py-1 px-4 rounded text-white disabled:bg-slate-200 disabled:cursor-not-allowed'
               disabled={!isFormReadyToSubmit}
             >
               Save

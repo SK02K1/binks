@@ -55,7 +55,7 @@ export const Posts = () => {
         ></textarea>
         <div className='flex'>
           <button
-            className='bg-slate-600 py-1 px-4 rounded ml-auto disabled:cursor-not-allowed disabled:bg-slate-100 text-white'
+            className='bg-slate-600 py-1 px-4 rounded ml-auto disabled:cursor-not-allowed disabled:bg-slate-200 text-white'
             disabled={content === '' || isPosting}
           >
             Post
